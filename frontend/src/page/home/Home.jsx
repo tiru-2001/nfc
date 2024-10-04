@@ -17,7 +17,6 @@ import { MdEmail } from 'react-icons/md';
 const Home = () => {
   const [userData, setUserData] = useState(null);
   useEffect(() => {
-    console.log('hi');
     getUserInfo();
   }, []);
   const getUserInfo = async () => {
@@ -35,21 +34,31 @@ const Home = () => {
 
   const savetoPhone = () => {
     if (userData) {
-      const dataStr = JSON.stringify(userData, null, 2);
-      const blob = new Blob([dataStr], { type: 'application/json' });
+      // Constructing vCard (VCF) format for contact information
+      const vCardData = `
+  BEGIN:VCARD
+  VERSION:3.0
+  FN:${userData?.name}  
+  ORG:${userData?.organization || 'Company Name'}  
+  TEL:${userData?.phone} 
+  EMAIL:${userData?.email} 
+  URL:${userData?.website}  
+  END:VCARD`;
+
+      const blob = new Blob([vCardData], { type: 'text/vcard' });
       const url = URL.createObjectURL(blob);
 
       const link = document.createElement('a');
       link.href = url;
-      link.download = `${userData?.name || 'userData'}.json`;
+      link.download = `${userData?.name || 'contact'}.vcf`;
       document.body.appendChild(link);
       link.click();
+
       document.body.removeChild(link);
     } else {
       toast.error('No user data available to download');
     }
   };
-  console.log('hello');
 
   return (
     <section className={styles.homeParent}>

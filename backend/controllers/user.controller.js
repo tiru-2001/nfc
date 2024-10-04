@@ -64,7 +64,7 @@ const addUserData = async (req, res) => {
 };
 
 const getUserData = async (req, res) => {
-  try {tirumalesha
+  try {
     const { userInfo } = req.params;
     const checkUserExist = await user.findOne({ link: { $regex: userInfo } });
     if (!checkUserExist) {
