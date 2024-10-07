@@ -38,14 +38,13 @@ const Home = () => {
       const vCardData = `
   BEGIN:VCARD
   VERSION:3.0
-  FN:${userData?.name}  
-  ORG:${userData?.organization || 'Company Name'}  
-  TEL:${userData?.phone} 
-  EMAIL:${userData?.email} 
-  URL:${userData?.website}  
-  END:VCARD`;
+  FN:${userData?.name}
+  TEL:${userData?.phone}
+  EMAIL:${userData?.email}
+  END:VCARD
+  `.trim(); // Ensures no accidental empty spaces before/after
 
-      const blob = new Blob([vCardData], { type: 'text/vcard' });
+      const blob = new Blob([vCardData], { type: 'text/x-vcard' }); // Changed to text/x-vcard
       const url = URL.createObjectURL(blob);
 
       const link = document.createElement('a');
