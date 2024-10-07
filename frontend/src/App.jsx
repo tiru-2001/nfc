@@ -9,7 +9,7 @@ function App() {
       <ToastContainer />
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/user/:userId" element={<Home />} />
         </Routes>
       </Router>
     </>
