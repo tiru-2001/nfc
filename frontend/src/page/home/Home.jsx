@@ -33,30 +33,36 @@ const Home = () => {
   };
 
   const savetoPhone = () => {
-    if (userData) {
-      // Constructing vCard (VCF) format for contact information
-      const vCardData = `
-  BEGIN:VCARD
-  VERSION:3.0
-  FN:${userData?.name}
-  TEL:${userData?.phone}
-  EMAIL:${userData?.email}
-  END:VCARD
-  `.trim(); // Ensures no accidental empty spaces before/after
+    // vCard data to be downloaded
+    const vcardData = `
+BEGIN:VCARD
+VERSION:3.0
+FN:${userData?.name}
+TEL:${userData?.phone}
+URL;TYPE=Facebook:${userData?.faceBookLink}\n
+URL;TYPE=Instagram:${userData?.instagramLink}\n
+URL;TYPE=Twitter:${userData?.twitterLink}\n
+EMAIL:${userData?.email}
+END:VCARD`;
 
-      const blob = new Blob([vCardData], { type: 'text/x-vcard' }); // Changed to text/x-vcard
-      const url = URL.createObjectURL(blob);
+    // Create a Blob containing the vCard data
+    const blob = new Blob([vcardData], { type: 'text/vcard' });
 
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `${userData?.name || 'contact'}.vcf`;
-      document.body.appendChild(link);
-      link.click();
+    // Create a link element
+    const link = document.createElement('a');
 
-      document.body.removeChild(link);
-    } else {
-      toast.error('No user data available to download');
-    }
+    // Set the href attribute to the Blob URL
+    link.href = window.URL.createObjectURL(blob);
+
+    // Set the download attribute with the desired filename
+    link.download = 'contact.vcf';
+
+    // Programmatically trigger the download
+    document.body.appendChild(link);
+    link.click();
+
+    // Cleanup
+    document.body.removeChild(link);
   };
 
   return (
