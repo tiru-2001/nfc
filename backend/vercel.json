@@ -2,6 +2,13 @@
   "version": 2,
   "builds": [
     {
+      "src": "frontend/dist/**/*",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "frontend/dist"
+      }
+    },
+    {
       "src": "server.js",
       "use": "@vercel/node"
     }
@@ -9,6 +16,10 @@
   "routes": [
     {
       "src": "/(.*)",
+      "dest": "/frontend/dist/index.html"
+    },
+    {
+      "src": "/api/(.*)",
       "dest": "/server.js"
     }
   ]
